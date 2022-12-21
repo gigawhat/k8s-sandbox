@@ -27,6 +27,15 @@ tasks:
     deps:
       - cluster
 
+  argocd:
+    desc: Install ArgoCD
+    cmds:
+      - kubectl --context "{{.kubectx}}" apply -k argocd/deployment
+    env:
+      KUBECONFIG: "{{.kubeconfig}}"
+    deps:
+      - addons
+
   clean:
     desc: Delete the local k8s cluster
     cmds:
