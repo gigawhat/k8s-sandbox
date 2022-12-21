@@ -1,0 +1,34 @@
+version: "3"
+vars:
+  clusterName: k8s-sandbox
+  clusterImage: "kindest/node:v1.25.3@sha256:f52781bc0d7a19fb6c405c2af83abfeb311f130707a0e219175677e366cc45d1"
+  kubeconfig: "{{.clusterName}}.kubeconfig"
+  kubectx: "kind-{{.clusterName}}"
+
+tasks:
+  default:
+    desc: Create a local k8s cluster and install addons
+    cmds:
+      - task: addons
+
+  cluster:
+    desc: Create a local k8s cluster
+    cmds:
+      - kind create cluster --name "{{.clusterName}}" --image "{{.clusterImage}}" --kubeconfig "{{.kubeconfig}}" --wait 5m
+    status:
+      - kind get clusters | grep -q "{{.clusterName}}"
+
+  addons:
+    desc: Install addons
+    cmds:
+      - kubectl --context "{{.kubectx}}" apply -k addons
+    env:
+      KUBECONFIG: "{{.kubeconfig}}"
+    deps:
+      - cluster
+
+  clean:
+    desc: Delete the local k8s cluster
+    cmds:
+      - kind delete cluster --name {{.clusterName}}
+      - rm -f {{.clusterName}}.kubeconfig
