@@ -21,7 +21,7 @@ spec:
         fsGroup: 65534
       containers:
         - name: podinfo
-          image: podinfo
+          image: ghcr.io/stefanprodan/podinfo:lastest
           imagePullPolicy: Always
           ports:
             - containerPort: 9898

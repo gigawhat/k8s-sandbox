@@ -12,6 +12,5 @@ resources:
   - ../base
 
 images:
-  - name: podinfo
-    newName: podinfo/podinfo
-    newTag: 6.2.0
+  - name: ghcr.io/stefanprodan/podinfo
+    newTag: 6.3.0
